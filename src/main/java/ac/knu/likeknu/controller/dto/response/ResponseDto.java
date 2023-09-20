@@ -6,12 +6,12 @@ import java.time.LocalDateTime;
 
 @Getter
 public class ResponseDto<T> {
-    private final LocalDateTime timeStamp;
+    private final LocalDateTime timestamp;
     private final String message;
     private final ResponseData<T> data;
 
-    protected ResponseDto(LocalDateTime timeStamp, String message, ResponseData<T> data) {
-        this.timeStamp = timeStamp;
+    protected ResponseDto(LocalDateTime timestamp, String message, ResponseData<T> data) {
+        this.timestamp = timestamp;
         this.message = message;
         this.data = data;
     }

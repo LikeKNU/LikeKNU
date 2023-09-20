@@ -1,0 +1,152 @@
+{
+  "timeStamp": "2023-09-12T22:09:53.196454",
+  "message": "",
+  "data": {
+    "body": [
+      {
+        "cafeteriaId": "cafeteria_aaaaaaaaaaaaaaaaaaaa",
+        "cafeteriaName": "학생식당",
+        "menu": [
+          {
+            "menuId": 1,
+            "menuName": "쇠고기무국"
+          },
+          {
+            "menuId": 2,
+            "menuName": "스팸가지그라탕"
+          },
+          {
+            "menuId": 3,
+            "menuName": "땅콩연근조림"
+          },
+          {
+            "menuId": 4,
+            "menuName": "참나물유자청무침"
+          },
+          {
+            "menuId": 5,
+            "menuName": "포기김치"
+          },
+          {
+            "menuId": 6,
+            "menuName": "과일"
+          },
+          {
+            "menuId": 7,
+            "menuName": "토스트"
+          },
+          {
+            "menuId": 8,
+            "menuName": "씨리얼"
+          },
+          {
+            "menuId": 9,
+            "menuName": "우유"
+          }
+        ]
+      },
+      {
+        "cafeteriaId": "cafeteria_bbbbbbbbbbbbbbbbbbbb",
+        "cafeteriaName": "직원식당",
+        "menu": [
+          {
+            "menuId": 1,
+            "menuName": "콩나물국"
+          },
+          {
+            "menuId": 2,
+            "menuName": "스팸구이"
+          },
+          {
+            "menuId": 3,
+            "menuName": "가자미카레구이"
+          },
+          {
+            "menuId": 4,
+            "menuName": "숙주나물"
+          },
+          {
+            "menuId": 5,
+            "menuName": "무말랭이무침"
+          },
+          {
+            "menuId": 6,
+            "menuName": "배추김치"
+          },
+          {
+            "menuId": 7,
+            "menuName": "씨리얼&우유"
+          },
+          {
+            "menuId": 8,
+            "menuName": "토스트"
+          }
+        ]
+      },
+      {
+        "cafeteriaId": "cafeteria_cccccccccccccccccccc",
+        "cafeteriaName": "은행사/비전",
+        "menu": [
+          {
+            "menuId": 1,
+            "menuName": "돈육김치찌개"
+          },
+          {
+            "menuId": 2,
+            "menuName": "대패삼겹살"
+          },
+          {
+            "menuId": 3,
+            "menuName": "파채무침"
+          },
+          {
+            "menuId": 4,
+            "menuName": "오징어미나리초무침"
+          },
+          {
+            "menuId": 5,
+            "menuName": "콩나물무침"
+          },
+          {
+            "menuId": 6,
+            "menuName": "배추김치"
+          }
+        ]
+      },
+      {
+        "cafeteriaId": "cafeteria_dddddddddddddddddddd",
+        "cafeteriaName": "드림",
+        "menu": [
+          {
+            "menuId": 1,
+            "menuName": "흰밥"
+          },
+          {
+            "menuId": 2,
+            "menuName": "사태족발"
+          },
+          {
+            "menuId": 3,
+            "menuName": "상추쌈"
+          },
+          {
+            "menuId": 4,
+            "menuName": "해물볶음우동"
+          },
+          {
+            "menuId": 5,
+            "menuName": "무말랭이무침"
+          },
+          {
+            "menuId": 6,
+            "menuName": "김치"
+          },
+          {
+            "menuId": 7,
+            "menuName": "플리또"
+          }
+        ]
+      }
+    ]
+  }
+}
