@@ -33,17 +33,23 @@ public class NotificationService {
     }
 
     public List<NotificationListResponse> getNotificationList(String deviceId, Period period, PageDto pageDto) {
+        Device device = deviceRepository.findById(deviceId)
+                .orElseThrow(() -> new BusinessException(String.format("Device not found! [%s]", deviceId)));
+        Page<Notification> notifications = getNotifications(device, period, pageDto);
+
+        return notifications.stream()
+                .map(NotificationListResponse::of)
+                .toList();
+    }
+
+    private Page<Notification> getNotifications(Device device, Period period, PageDto pageDto) {
         LocalDateTime fromDate = LocalDate.now().minus(period).atStartOfDay();
         PageRequest pageRequest = PageRequest.of(pageDto.getCurrentPage() - 1, DEFAULT_NOTIFICATION_PAGE_SIZE,
                 Sort.by(Sort.Order.desc("notificationDate")));
-        Device device = deviceRepository.findById(deviceId)
-                .orElseThrow(() -> new BusinessException(String.format("Device not found! [%s]", deviceId)));
 
         Page<Notification> notifications = notificationRepository
                 .findByDevicesContainingAndNotificationDateGreaterThanEqual(device, fromDate, pageRequest);
         pageDto.updateTotalPages(notifications.getTotalPages());
-        return notifications.stream()
-                .map(NotificationListResponse::of)
-                .toList();
+        return notifications;
     }
 }
