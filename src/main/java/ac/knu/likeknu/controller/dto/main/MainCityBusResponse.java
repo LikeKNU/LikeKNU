@@ -3,39 +3,20 @@ package ac.knu.likeknu.controller.dto.main;
 import ac.knu.likeknu.domain.CityBus;
 import ac.knu.likeknu.domain.Route;
 import lombok.Builder;
-import lombok.Getter;
 
 import java.time.Duration;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
-@Getter
-public class MainCityBusResponse {
-
-    private final String routeId;
-    private final String departureStop;
-    private final String arrivalStop;
-    private final String busNumber;
-    private final String remainingTime;
-    private final String arrivalTime;
-    private final String busColor;
-
-    @Builder
-    public MainCityBusResponse(String routeId, String departureStop, String arrivalStop, String busNumber, String remainingTime, String arrivalTime, String busColor) {
-        this.routeId = routeId;
-        this.departureStop = departureStop;
-        this.arrivalStop = arrivalStop;
-        this.busNumber = busNumber;
-        this.remainingTime = remainingTime;
-        this.arrivalTime = arrivalTime;
-        this.busColor = busColor;
-    }
+@Builder
+public record MainCityBusResponse(String routeId, String origin, String destination, String busNumber,
+                                  String remainingTime, String arrivalTime, String busColor) {
 
     public static MainCityBusResponse empty(Route route) {
         return MainCityBusResponse.builder()
                 .routeId(route.getId())
-                .departureStop(route.getDepartureStop())
-                .arrivalStop(route.getArrivalStop())
+                .origin(route.getOrigin())
+                .destination(route.getDestination())
                 .build();
     }
 
@@ -45,8 +26,8 @@ public class MainCityBusResponse {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm");
         return MainCityBusResponse.builder()
                 .routeId(route.getId())
-                .departureStop(route.getDepartureStop())
-                .arrivalStop(route.getArrivalStop())
+                .origin(route.getOrigin())
+                .destination(route.getDestination())
                 .busNumber(cityBus.getBusNumber())
                 .remainingTime(remainingTime <= 1 ? "곧 도착" : remainingTime + "분 뒤")
                 .arrivalTime(earliestArrivalTime.format(dateTimeFormatter))

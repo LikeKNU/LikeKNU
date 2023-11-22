@@ -1,12 +1,12 @@
 package ac.knu.likeknu.service;
 
 import ac.knu.likeknu.controller.dto.citybus.CityBusesArrivalTimeResponse;
-import ac.knu.likeknu.controller.dto.citybus.RouteListResponse;
+import ac.knu.likeknu.controller.dto.citybus.CityBusesResponse;
 import ac.knu.likeknu.controller.dto.main.MainCityBusResponse;
 import ac.knu.likeknu.domain.CityBus;
 import ac.knu.likeknu.domain.Route;
 import ac.knu.likeknu.domain.value.Campus;
-import ac.knu.likeknu.exception.BusinessException;
+import ac.knu.likeknu.domain.value.RouteType;
 import ac.knu.likeknu.repository.CityBusRepository;
 import ac.knu.likeknu.repository.RouteRepository;
 import ac.knu.likeknu.utils.TestInstanceFactory;
@@ -22,11 +22,9 @@ import org.springframework.data.domain.Sort;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatList;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -76,9 +74,9 @@ class CityBusServiceTest {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm");
         assertAll(
                 () -> assertThatList(earliestCityBuses).size().isEqualTo(3),
-                () -> assertThat(mainCityBusResponse.getArrivalTime()).isEqualTo(LocalTime.now().format(dateTimeFormatter)),
-                () -> assertThat(mainCityBusResponse.getRemainingTime()).isEqualTo("곧 도착"),
-                () -> assertThat(mainCityBusResponse.getBusNumber()).isEqualTo("110")
+                () -> assertThat(mainCityBusResponse.arrivalTime()).isEqualTo(LocalTime.now().format(dateTimeFormatter)),
+                () -> assertThat(mainCityBusResponse.remainingTime()).isEqualTo("곧 도착"),
+                () -> assertThat(mainCityBusResponse.busNumber()).isEqualTo("110")
         );
     }
 
@@ -91,61 +89,50 @@ class CityBusServiceTest {
         Route route2 = TestInstanceFactory
                 .createRoute("Stop A", "Stop C", "A", "C");
         Route route3 = TestInstanceFactory
-                .createRoute("Stop D", "Stop A", "A", "B");
-
-        // when
-        when(routeRepository.findByCampus(eq(Campus.CHEONAN), any(Sort.class)))
-                .thenReturn(List.of(route1, route2, route3));
-        List<RouteListResponse> routeList = cityBusService.getRouteList(Campus.CHEONAN);
-
-        // then
-        RouteListResponse routeListResponse = routeList.get(0);
-        assertAll(
-                () -> assertThatList(routeList).isNotEmpty(),
-                () -> assertThatList(routeList).hasSize(3),
-                () -> assertThat(routeListResponse.getRouteId()).isEqualTo(route1.getId()),
-                () -> assertThat(routeListResponse.getDepartureStop()).isEqualTo(route1.getDepartureStop()),
-                () -> assertThat(routeListResponse.getArrivalStop()).isEqualTo(route1.getArrivalStop())
-        );
-    }
-
-    @DisplayName("특정 경로의 시내버스 도착 시간 정보를 조회할 수 있다.")
-    @Test
-    void getCityBusesArrivalTimeSuccess() throws Exception {
-        // given
-        Route route = TestInstanceFactory.createRoute("Stop A", "Stop B");
+                .createRoute("Stop D", "Stop A", "D", "B");
 
         CityBus cityBus1 = TestInstanceFactory.createCityBus("100");
         CityBus cityBus2 = TestInstanceFactory.createCityBus("110");
         CityBus cityBus3 = TestInstanceFactory.createCityBus("120");
 
         // when
-        when(routeRepository.findById(eq(route.getId()))).thenReturn(Optional.of(route));
-        when(cityBusRepository.findByRoutesContaining(eq(route))).thenReturn(List.of(cityBus1, cityBus2, cityBus3));
-        List<CityBusesArrivalTimeResponse> cityBusesArrivalTime =
-                cityBusService.getCityBusesArrivalTime(route.getId());
+        when(routeRepository.findByCampusAndRouteType(eq(Campus.CHEONAN), eq(RouteType.INCOMING)))
+                .thenReturn(List.of(route1, route3));
+        when(routeRepository.findByCampusAndRouteType(eq(Campus.CHEONAN), eq(RouteType.OUTGOING)))
+                .thenReturn(List.of(route2));
+        when(cityBusRepository.findByRoutesContaining(any(Route.class)))
+                .thenReturn(List.of(cityBus1, cityBus2, cityBus3));
+
+        List<CityBusesResponse> cityBusesArrivalTimeIncoming =
+                cityBusService.getCityBusesArrivalTime(Campus.CHEONAN, RouteType.INCOMING);
+        List<CityBusesResponse> cityBusesArrivalTimeOutgoing =
+                cityBusService.getCityBusesArrivalTime(Campus.CHEONAN, RouteType.OUTGOING);
+
+        LocalTime currentTime = LocalTime.now();
 
         // then
-        CityBusesArrivalTimeResponse cityBusesArrivalTimeResponse = cityBusesArrivalTime.get(3);
+        CityBusesResponse cityBusesResponse1 = cityBusesArrivalTimeIncoming.get(0);
+        List<CityBusesArrivalTimeResponse> buses1 = cityBusesResponse1.buses();
+        CityBusesArrivalTimeResponse cityBusesArrivalTimeResponse1 = buses1.get(0);
+
+        CityBusesResponse cityBusesResponse2 = cityBusesArrivalTimeIncoming.get(0);
+        List<CityBusesArrivalTimeResponse> buses2 = cityBusesResponse1.buses();
+        CityBusesArrivalTimeResponse cityBusesArrivalTimeResponse2 = buses1.get(0);
+
         assertAll(
-                () -> assertThatList(cityBusesArrivalTime).hasSize(6),
-                () -> assertThat(cityBusesArrivalTimeResponse.getArrivalTime())
-                        .isEqualTo(LocalTime.now().plusMinutes(10).format(DateTimeFormatter.ofPattern("HH:mm"))),
-                () -> assertThat(cityBusesArrivalTimeResponse.getRemainingTime()).isEqualTo("9분 뒤"),
-                () -> assertThat(cityBusesArrivalTimeResponse.getBusNumber()).isEqualTo("100")
+                () -> assertThatList(cityBusesArrivalTimeIncoming).isNotEmpty(),
+                () -> assertThatList(cityBusesArrivalTimeIncoming).hasSize(2),
+                () -> assertThatList(buses1).hasSize(5),
+                () -> assertThat(cityBusesResponse1.origin()).isEqualTo(route1.getOrigin()),
+                () -> assertThat(cityBusesArrivalTimeResponse1.busNumber()).isEqualTo(cityBus1.getBusNumber())
         );
-    }
 
-    @DisplayName("존재하지 않는 경로 ID인 경우 시내버스 도착 시간 정보 조회에 실패한다.")
-    @Test
-    void getCityBusesArrivalTimeFailRouteIdNotFound() throws Exception {
-        // given
-
-        // when
-        when(routeRepository.findById(any())).thenReturn(Optional.empty());
-
-        // then
-        assertThatThrownBy(() -> cityBusService.getCityBusesArrivalTime("invalid_id"))
-                .isInstanceOf(BusinessException.class);
+        assertAll(
+                () -> assertThatList(cityBusesArrivalTimeOutgoing).isNotEmpty(),
+                () -> assertThatList(cityBusesArrivalTimeOutgoing).hasSize(1),
+                () -> assertThatList(buses2).hasSize(5),
+                () -> assertThat(cityBusesResponse2.origin()).isEqualTo(route2.getOrigin()),
+                () -> assertThat(cityBusesArrivalTimeResponse2.busNumber()).isEqualTo(cityBus1.getBusNumber())
+        );
     }
 }

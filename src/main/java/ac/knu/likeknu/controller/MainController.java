@@ -1,6 +1,6 @@
 package ac.knu.likeknu.controller;
 
-import ac.knu.likeknu.controller.dto.base.*;
+import ac.knu.likeknu.controller.dto.base.ResponseDto;
 import ac.knu.likeknu.controller.dto.main.MainAnnouncementsResponse;
 import ac.knu.likeknu.controller.dto.main.MainCityBusResponse;
 import ac.knu.likeknu.controller.dto.main.MainMenuResponse;
@@ -64,6 +64,11 @@ public class MainController {
     @GetMapping("/schedule")
     public ResponseDto<List<MainScheduleResponse>> getMainSchedule() {
         List<MainScheduleResponse> scheduleResponse = mainService.getScheduleResponse();
+
+        if (scheduleResponse.isEmpty()) {
+            return ResponseDto.of(scheduleResponse, "The data is not available.");
+        }
+
         return ResponseDto.of(scheduleResponse);
     }
 }

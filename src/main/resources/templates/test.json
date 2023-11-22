@@ -1,0 +1,28 @@
+{
+  "timeStamp": "2023-10-09T01:07:05.4169157",
+  "message": null,
+  "data": {
+    "body": [
+      {
+        "origin": "공주대",
+        "destination": "터미널",
+        "departureStop": "공주대공과대학 정류장 출발",
+        "buses": [
+          {
+            "arrivalId": 1,
+            "busNumber": "110",
+            "remainingTime": "곧 도착",
+            "busColor": "FFFFFF"
+          },
+          {
+            "arrivalId": 2,
+            "busNumber": "140",
+            "remainingTime": "13분 뒤",
+            "busColor": "000000"
+          }
+        ]
+      },
+      ...
+    ]
+  }
+}

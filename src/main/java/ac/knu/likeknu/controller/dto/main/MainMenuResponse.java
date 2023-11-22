@@ -2,7 +2,7 @@ package ac.knu.likeknu.controller.dto.main;
 
 import ac.knu.likeknu.controller.dto.menu.MenuListDto;
 import ac.knu.likeknu.domain.Cafeteria;
-import ac.knu.likeknu.domain.value.CafeteriaName;
+import ac.knu.likeknu.domain.value.MealType;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -14,12 +14,14 @@ public class MainMenuResponse {
 
     private final String cafeteriaId;
     private final String cafeteriaName;
+    private final String mealType;
     private final List<MenuListDto> menus;
 
     @Builder
-    public MainMenuResponse(String cafeteriaId, String cafeteriaName, List<MenuListDto> menus) {
+    public MainMenuResponse(String cafeteriaId, String cafeteriaName, String mealType, List<MenuListDto> menus) {
         this.cafeteriaId = cafeteriaId;
         this.cafeteriaName = cafeteriaName;
+        this.mealType = mealType;
         this.menus = menus;
     }
 
@@ -35,6 +37,7 @@ public class MainMenuResponse {
         return MainMenuResponse.builder()
                 .cafeteriaId(cafeteria.getId())
                 .cafeteriaName(cafeteria.getCafeteriaName().getCafeteriaName())
+                .mealType(MealType.now().getMealTypeKr())
                 .menus(menuList)
                 .build();
     }
@@ -43,6 +46,7 @@ public class MainMenuResponse {
         return MainMenuResponse.builder()
                 .cafeteriaId(cafeteria.getId())
                 .cafeteriaName(cafeteria.getCafeteriaName().getCafeteriaName())
+                .mealType(MealType.now().getMealTypeKr())
                 .menus(new ArrayList<>())
                 .build();
     }

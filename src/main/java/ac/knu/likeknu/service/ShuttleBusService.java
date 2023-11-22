@@ -5,7 +5,6 @@ import ac.knu.likeknu.controller.dto.shuttlebus.ShuttleListResponse;
 import ac.knu.likeknu.domain.Shuttle;
 import ac.knu.likeknu.domain.ShuttleBus;
 import ac.knu.likeknu.domain.value.Campus;
-import ac.knu.likeknu.domain.value.ShuttleType;
 import ac.knu.likeknu.exception.BusinessException;
 import ac.knu.likeknu.repository.ShuttleBusRepository;
 import ac.knu.likeknu.repository.ShuttleRepository;
@@ -34,9 +33,9 @@ public class ShuttleBusService {
      * @param shuttleType 셔틀버스 타입 (등교버스•순환버스)
      * @return 캠퍼스별 셔틀버스 경로 목록
      */
-    public List<ShuttleListResponse> getRouteList(Campus campus, ShuttleType shuttleType) {
-        return shuttleRepository.findByShuttleType(shuttleType).stream()
-                .filter(shuttle -> shuttle.getCampuses().contains(campus))
+    public List<ShuttleListResponse> getRouteList(Campus campus) {
+        return shuttleRepository.findByCampusesContains(campus)
+                .stream()
                 .map(ShuttleListResponse::of)
                 .toList();
     }
@@ -50,7 +49,8 @@ public class ShuttleBusService {
     public List<ShuttleBusesArrivalTimeResponse> getShuttleBusesArrivalTime(String shuttleId) {
         Shuttle shuttle = shuttleRepository.findById(shuttleId)
                 .orElseThrow(() -> new BusinessException(String.format("Shuttle not found [%s]", shuttleId)));
-        return shuttleBusRepository.findByShuttle(shuttle).stream()
+        return shuttleBusRepository.findByShuttle(shuttle)
+                .stream()
                 .sorted(Comparator.comparing(ShuttleBus::getDepartureTime))
                 .map(ShuttleBusesArrivalTimeResponse::of)
                 .toList();

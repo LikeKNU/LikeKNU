@@ -5,9 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDate;
-import java.time.MonthDay;
 import java.time.format.DateTimeFormatter;
-import java.time.format.TextStyle;
 import java.util.Locale;
 
 @Getter
@@ -40,7 +38,7 @@ public class MainScheduleResponse {
 
     private static boolean isBetween(LocalDate startDate, LocalDate endDate) {
         LocalDate now = LocalDate.now();
-        return startDate.compareTo(now) >= 0 && endDate.compareTo(now) <=0;
+        return !startDate.isBefore(now) && !endDate.isAfter(now);
     }
 
     private static String dateParser(LocalDate startDate, LocalDate endDate) {
@@ -54,9 +52,6 @@ public class MainScheduleResponse {
     }
 
     private static String dateFormatter(LocalDate date) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd");
-
-        return MonthDay.from(date).format(formatter) + "("
-                + date.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.KOREAN) + ")";
+        return date.format(DateTimeFormatter.ofPattern("MM/dd(EEEEE)", Locale.KOREA));
     }
 }

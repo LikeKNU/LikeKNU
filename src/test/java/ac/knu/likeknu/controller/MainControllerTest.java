@@ -29,9 +29,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @Slf4j
 @DisplayName("메인 컨트롤러 테스트")
@@ -144,10 +142,10 @@ class MainControllerTest {
                 new MenuListDto(2, "testMenu2")
         );
 
-        MainMenuResponse menuResponse1 = new MainMenuResponse("cafeteriaId1", "학생식당", menus);
-        MainMenuResponse menuResponse2 = new MainMenuResponse("cafeteriaId2", "생활관식당", menus);
-        MainMenuResponse menuResponse3 = new MainMenuResponse("cafeteriaId2", "생활관식당", menus);
-        MainMenuResponse menuResponse4 = new MainMenuResponse("cafeteriaId3", "직원식당", menus);
+        MainMenuResponse menuResponse1 = new MainMenuResponse("cafeteriaId1", "학생식당", "아침", menus);
+        MainMenuResponse menuResponse2 = new MainMenuResponse("cafeteriaId2", "생활관식당", "점심", menus);
+        MainMenuResponse menuResponse3 = new MainMenuResponse("cafeteriaId2", "생활관식당", "저녁", menus);
+        MainMenuResponse menuResponse4 = new MainMenuResponse("cafeteriaId3", "직원식당", "아침", menus);
 
         List<MainMenuResponse> menuResponses1 = new ArrayList<>(List.of(menuResponse1, menuResponse2, menuResponse4));
         List<MainMenuResponse> menuResponses2 = new ArrayList<>(List.of(menuResponse1, menuResponse3, menuResponse4));
