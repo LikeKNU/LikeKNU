@@ -18,20 +18,20 @@ import static org.springframework.data.redis.cache.RedisCacheManager.RedisCacheM
 @Configuration
 public class CacheConfiguration {
 
-    private static final int DEFAULT_TIME_TO_LIVE_MINUTES = 5;
+    private static final int DEFAULT_ANNOUNCEMENT_TIME_TO_LIVE_MINUTES = 5;
 
     @Bean
     public CacheManager redisCacheManager(RedisConnectionFactory redisConnectionFactory) {
         RedisCacheConfiguration redisCacheConfiguration =
-                generateRedisCacheConfiguration(Duration.ofMinutes(DEFAULT_TIME_TO_LIVE_MINUTES));
+                generateRedisCacheConfiguration().entryTtl(Duration.ofMinutes(DEFAULT_ANNOUNCEMENT_TIME_TO_LIVE_MINUTES));
         return RedisCacheManagerBuilder.fromConnectionFactory(redisConnectionFactory)
                 .cacheDefaults(redisCacheConfiguration).build();
     }
 
-    private static RedisCacheConfiguration generateRedisCacheConfiguration(Duration duration) {
+    private static RedisCacheConfiguration generateRedisCacheConfiguration() {
         return RedisCacheConfiguration.defaultCacheConfig()
                 .serializeKeysWith(SerializationPair.fromSerializer(new StringRedisSerializer()))
                 .serializeValuesWith(SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()))
-                .entryTtl(duration);
+                .disableCachingNullValues();
     }
 }
