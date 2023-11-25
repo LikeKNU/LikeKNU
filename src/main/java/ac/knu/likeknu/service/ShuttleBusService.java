@@ -51,7 +51,7 @@ public class ShuttleBusService {
                 .orElseThrow(() -> new BusinessException(String.format("Shuttle not found [%s]", shuttleId)));
         return shuttleBusRepository.findByShuttle(shuttle)
                 .stream()
-                .sorted(Comparator.comparing(ShuttleBus::getDepartureTime))
+                .sorted(Comparator.comparing(ShuttleBus::getDepartureTime).thenComparing(ShuttleBus::getBusName))
                 .map(ShuttleBusesArrivalTimeResponse::of)
                 .toList();
     }
