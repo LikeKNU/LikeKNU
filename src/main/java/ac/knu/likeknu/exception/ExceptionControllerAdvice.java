@@ -3,6 +3,7 @@ package ac.knu.likeknu.exception;
 import ac.knu.likeknu.service.SlackService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -25,15 +26,13 @@ public class ExceptionControllerAdvice {
                 .body(message);
     }
 
-    /*@ExceptionHandler(value = Exception.class)
-    protected ResponseEntity<String> exceptionHandler(Exception exception) {
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    protected ResponseEntity<String> missingRequestParameterExceptionHandler(
+            MissingServletRequestParameterException exception) {
         String message = exception.getMessage();
-        String stackTrace = Arrays.stream(exception.getStackTrace())
-                .map(StackTraceElement::toString)
-                .collect(Collectors.joining());
-        log.error("Exception: ", exception);
-        slackService.sendMessage(String.join("\n", message, stackTrace));
-        return ResponseEntity.internalServerError()
+        String parameterName = exception.getParameterName();
+        log.warn("message = {}, parameterName = {}", message, parameterName);
+        return ResponseEntity.badRequest()
                 .body(message);
-    }*/
+    }
 }

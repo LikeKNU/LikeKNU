@@ -4,7 +4,7 @@ import ac.knu.likeknu.domain.AcademicCalendar;
 
 import java.time.LocalDate;
 
-public class AcademicCalendarFixture {
+public final class AcademicCalendarFixture {
 
     public static AcademicCalendar createAcademicCalendar() {
         LocalDate currentDate = LocalDate.now();

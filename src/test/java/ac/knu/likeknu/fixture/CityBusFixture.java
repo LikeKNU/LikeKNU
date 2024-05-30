@@ -8,7 +8,7 @@ import ac.knu.likeknu.domain.constants.RouteType;
 import java.time.LocalTime;
 import java.util.List;
 
-public class CityBusFixture {
+public final class CityBusFixture {
 
     public static Route createRoute() {
         return Route.builder()

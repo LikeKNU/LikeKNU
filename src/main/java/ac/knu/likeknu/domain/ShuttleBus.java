@@ -38,9 +38,10 @@ public class ShuttleBus {
     }
 
     @Builder
-    public ShuttleBus(String busName, Shuttle shuttle) {
+    public ShuttleBus(String busName, Shuttle shuttle, List<ShuttleTime> shuttleTimes) {
         this.busName = busName;
         this.shuttle = shuttle;
+        this.shuttleTimes = shuttleTimes;
     }
 
     public LocalTime getDepartureTime() {

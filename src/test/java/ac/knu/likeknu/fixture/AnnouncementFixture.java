@@ -8,7 +8,7 @@ import ac.knu.likeknu.domain.constants.Tag;
 import java.time.LocalDate;
 import java.time.Month;
 
-public class AnnouncementFixture {
+public final class AnnouncementFixture {
 
     public static final String TITLE = "like-knu";
     public static final String URL = "https://fileisHere.com";
@@ -17,6 +17,17 @@ public class AnnouncementFixture {
     public static Announcement createAnnouncement() {
         return Announcement.builder()
                 .announcementTitle(TITLE)
+                .announcementUrl(URL)
+                .announcementDate(DATE)
+                .campus(Campus.SINGWAN)
+                .category(Category.STUDENT_NEWS)
+                .tag(Tag.ENROLMENT)
+                .build();
+    }
+
+    public static Announcement createAnnouncementWithTitle(String title) {
+        return Announcement.builder()
+                .announcementTitle(title)
                 .announcementUrl(URL)
                 .announcementDate(DATE)
                 .campus(Campus.SINGWAN)

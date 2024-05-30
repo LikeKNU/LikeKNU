@@ -44,7 +44,7 @@ public class AnnouncementController {
             @RequestParam("campus") Campus campus,
             @RequestParam(name = "page", defaultValue = "1") int page,
             @RequestParam(name = "keyword", required = false, defaultValue = "") String keyword,
-            @RequestParam("deviceId") String deviceId
+            @RequestParam(value = "deviceId", required = false) String deviceId
     ) {
         PageDto pageDto = PageDto.of(page);
         List<AnnouncementListResponse> announcements =

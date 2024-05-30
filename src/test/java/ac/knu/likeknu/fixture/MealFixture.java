@@ -7,7 +7,7 @@ import ac.knu.likeknu.domain.constants.MealType;
 
 import java.time.LocalDate;
 
-public class MealFixture {
+public final class MealFixture {
 
     public static Cafeteria createCafeteria() {
         return Cafeteria.builder()
